@@ -149,5 +149,6 @@ OFTEST(dcmdata_charString_getOFString) {
     OFCHECK_EQUAL(stringValue, "Smith=\x1b$BK\\x1b(J");
 }
 
-// also missing tests and probably specific implementation
-// for checkStringValue, verify, getOFStringArray, putOFStringAtPos, writeJson
+// may add tests for getOFStringArray, should work
+// also missing implementation and test for putOFStringAtPos
+// static functions verify and checkStringValue may be handled later separately

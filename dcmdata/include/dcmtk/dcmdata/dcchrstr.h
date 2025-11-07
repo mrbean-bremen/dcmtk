@@ -180,10 +180,10 @@ class DCMTK_DCMDATA_EXPORT DcmCharString
      * @param len the length of @a str
      * @param charSet the value of Specific Character Set; if not set, single-byte encoding is assumed
      * @return a pointer to the next component, or NULL if none exists.
-     * @note The pointer will point after the last character, if the component
+     * @note The pointer will point after the last character if the component
      *   is the last component and is empty (e.g., @a ends with a backslash).
      */
-    virtual const char* findNextComponentPosition(const char *str, Uint32 len, const OFString& charSet) const;
+    virtual const char* findNextValuePosition(const char *str, Uint32 len, const OFString& charSet) const;
 };
 
 

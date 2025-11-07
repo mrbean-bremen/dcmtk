@@ -505,13 +505,15 @@ OFCondition DcmByteString::putOFStringAtPos(const OFString& stringVal,
             // First value is set: Replace old value with new value
             else
             {
-                rightPos = str.find_first_of('\\', 0);
+                // TODO: adapt for chrstr
+                rightPos =  str.find_first_of('\\', 0);
                 str = str.replace(0, rightPos, stringVal);
             }
             return putOFStringArray(str);
         }
 
         // 3rd case: New value should be inserted somewhere in the middle
+        // TODO: adapt for chrstr
         size_t leftPos = 0;
         size_t vmPos = 0;
         // First, find the correct position, and then insert / replace new value
@@ -556,7 +558,7 @@ OFCondition DcmByteString::putOFStringAtPos(const OFString& stringVal,
 // ********************************
 
 
-const char* DcmByteString::findNextComponentPosition(const char* str, Uint32 len, const OFString& /*charSet*/) const
+const char* DcmByteString::findNextValuePosition(const char* str, Uint32 len, const OFString& /*charSet*/) const
 {
     const char *p = str;
     for (int i = 0; i < len; ++i)

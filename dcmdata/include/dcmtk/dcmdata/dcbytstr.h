@@ -391,7 +391,7 @@ class DCMTK_DCMDATA_EXPORT DcmByteString: public DcmElement
      * @note The pointer will point after the last character, if the component
      *   is the last component and is empty (e.g., @a ends with a backslash).
      */
-    virtual const char* findNextComponentPosition(const char *str, Uint32 len, const OFString& charSet) const;
+    virtual const char* findNextValuePosition(const char *str, Uint32 len, const OFString& charSet) const;
 
     /** convert currently stored string value to DICOM representation.
      *  It removes trailing spaces apart from a possibly required single padding

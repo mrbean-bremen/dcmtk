@@ -45,7 +45,7 @@
 
 #include "dcmtk/dcmdata/dcchrstr.h"
 
-static unsigned long getMaximumNumberOfComponents(const OFString& s, Uint32 len)
+static unsigned long getMaximumNumberOfValues(const OFString& s, Uint32 len)
 {
     // a byte representing a backslash may also be part of a multi-byte character,
     // so the found value may be higher than the real VM
@@ -244,7 +244,7 @@ unsigned long DcmCharString::getVM()
     if (!supportsMultiValue())
         return 1;
 
-    unsigned long vm = getMaximumNumberOfComponents(str, len);
+    unsigned long vm = getMaximumNumberOfValues(str, len);
     if (vm == 1 || !containsExtendedCharacters())
         return vm;
 
@@ -260,7 +260,7 @@ unsigned long DcmCharString::getVM()
     {
         const char *p = str;
         vm = 1;
-        while ((p = findNextComponentPosition(p, len - OFstatic_cast(Uint32, p - str), charset)) != NULL)
+        while ((p = findNextValuePosition(p, len - OFstatic_cast(Uint32, p - str), charset)) != NULL)
             ++vm;
         return vm;
     }
@@ -288,7 +288,7 @@ OFCondition DcmCharString::getOFString(OFString& stringVal, const unsigned long 
         return EC_Normal;
     }
 
-    if (!supportsMultiValue() || getMaximumNumberOfComponents(str, len) == 0)
+    if (!supportsMultiValue() || getMaximumNumberOfValues(str, len) == 0)
     {
         if (pos > 0)
             return EC_IllegalParameter;
@@ -311,7 +311,7 @@ OFCondition DcmCharString::getOFString(OFString& stringVal, const unsigned long 
             const char *p = str;
             unsigned long index = 0;
             while (index < pos &&
-                (p = findNextComponentPosition(p, len - OFstatic_cast(Uint32, p - str), charset)) != NULL)
+                (p = findNextValuePosition(p, len - OFstatic_cast(Uint32, p - str), charset)) != NULL)
                 ++index;
             if (p == NULL)
                 return EC_IllegalParameter;
@@ -319,7 +319,7 @@ OFCondition DcmCharString::getOFString(OFString& stringVal, const unsigned long 
                 stringVal.clear();
             else
             {
-                const char *end = findNextComponentPosition(p, len - OFstatic_cast(Uint32, p - str), charset);
+                const char *end = findNextValuePosition(p, len - OFstatic_cast(Uint32, p - str), charset);
                 if (end == NULL)
                     end = str + len + 1;
                 // account for the backslash before the end pointer
@@ -461,10 +461,10 @@ const OFString& DcmCharString::getDelimiterChars() const
     return DcmVR(ident()).getDelimiterChars();
 }
 
-const char* DcmCharString::findNextComponentPosition(const char* str, Uint32 len, const OFString& charSet) const
+const char* DcmCharString::findNextValuePosition(const char* str, Uint32 len, const OFString& charSet) const
 {
     if (charSet.empty())
-        return DcmByteString::findNextComponentPosition(str, len, charSet);
+        return DcmByteString::findNextValuePosition(str, len, charSet);
 
     const char *p = str;
     if (isNonAsciiConformMultiByteSingleValueCharacterSet(charSet))
